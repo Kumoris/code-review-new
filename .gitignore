@@ -1,0 +1,22 @@
+# Local review sessions and project-specific settings
+.ai/
+.code-review/
+.code-review-new/
+config.json
+.env
+.env.*
+!.env.example
+
+# Python and editor caches
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.DS_Store
+.idea/
+.vscode/
+
+# Credentials
+*.pem
+*.key

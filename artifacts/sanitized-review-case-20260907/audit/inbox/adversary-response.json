@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "agent_id": "adversary",
+  "role": "adversary",
+  "task_id": "adversary",
+  "cluster_id": "adversary",
+  "revision": "bcce10927fa3746eb13b19c0e71b029c52552c5c8b71475287ce5ce42b5daf6f",
+  "output": [
+    {
+      "finding_id": "local-context-business:LOCAL-001",
+      "verdict": "DEFINITE",
+      "rationale": "独立从固定 diffs.json 的 712 个 [N] 行重建并执行 local_context.py，校验重建内容对应的 repository_sha256 与派发 revision 一致。标准库 difflib 生成 notes.txt 的合法 unified diff：旧文本为 '-- a/old-label.txt\\nold detail\\n'，新文本为 '++ b/new-label.txt\\nnew detail\\n'。实际输出仅一条记录，file_path/new_path 为 new-label.txt、old_path 为 old-label.txt，content 为 ['@@ -1,2 +1,2 @@', '[O1]old detail', '[N1]new detail']；两条前缀正文确实丢失，真实第二行也被错误标成第一行。反证检查发现 [N315]/[N322] 的头部判断在 [N340]-[N350] 的 hunk 内容分支之前，且未检查 not in_hunk；没有后续分支补回这两条正文。[N386]-[N388] 是当前 staged/branch/commit/range 路径的直接调用；[N389]-[N392] 只能为缺失的真实文件补空 patch 并标记 partial，不能恢复正文或删除误归属记录。规则注册表将 BIZ-DATA-001 与 BIZ-SCENARIO-001 标为 review-required，未禁用；触发输入、错误结果和固定代码证据三项均明确，符合 references/business-review.md 和 references/false-positive-avoidance.md 的当前路径要求。按 references/severity-guidelines.md，已证实的本地检视输入缺失、误归属和定位错误支持保留 major；本次审查使用 whole_repo 基线快照，不主张该缺陷由本次变更引入，也不主张已发生远程错误评论发布。"
+    }
+  ],
+  "rejected_hypotheses": [
+    {
+      "origin": "controller_supplied_negative_control",
+      "hypothesis": "run_git/get_diff sending revision strings to subprocess.run allows shell metacharacters to execute shell commands",
+      "anchors": [
+        "local_context.py:[N92]",
+        "local_context.py:[N101]"
+      ],
+      "verdict": "SPECULATIVE",
+      "decision": "refuted",
+      "counted_as_admission_rejection": false,
+      "rationale": "这是控制方明确提供的负对照，不是自然 Reviewer finding，因此不进入 output，也不计为 Admission 拒绝。local_context.py [N92] 传入 ['git', *command]，[N101] 传入 ['git', '-c', 'core.quotePath=false', 'diff', *diff_args(args)]，两者均为参数列表且没有 shell=True；[N81]-[N88] 构造的 revision 保留为单独参数。分号因此交给 Git 作为参数内容，不会由 shell 解释；符合 references/common.md 的 COM-SEC-007 参数分离正例，所声称的 shell 注入机制不成立。独立用固定快照函数在临时空 Git 仓库传入 'HEAD; touch shell_marker'，run_git 和 get_diff 分别以 GIT_COMMAND_FAILED/GIT_DIFF_FAILED 退出 1，均未创建 shell_marker。该有限实验支持源代码反证，仅否定所给 shell 元字符执行假设，不外推为所有 Git 参数使用均安全。"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "proofs": [
+    {
+      "source_id": "local-context-business:LOCAL-001",
+      "source_ids": [
+        "local-context-business:LOCAL-001"
+      ],
+      "status": "confirmed",
+      "trigger": "当前 local_context.py:386 至 388 的 staged、branch、commit、range 路径调用 format_diff_with_anchors。合法 unified diff 中新增正文 `++ b/new-label.txt` 或删除正文 `-- a/old-label.txt`，会分别产生以 `+++ ` 或 `--- ` 开头的 hunk 行。",
+      "wrong_result": "已准入直接复现中，notes.txt 的 file_path/new_path 被改为 new-label.txt，old_path 被改为 old-label.txt；两条首行正文丢失，实际第二行错标为 [O1]old detail 和 [N1]new detail。控制器独立验证中，新增 C++ 正文 `++ counter;` 使 counter.cpp 被归属为 counter;，真实暂存区 CLI 返回 PARTIAL 与 missing_patch:counter.cpp；双分支 not in_hunk 修正方案通过同一检查。",
+      "diff_rule_evidence": "本次为单模块 whole_repo 当前快照基线。local_context.py 的 [N315] 与 [N322] 文件头分支未检查 not in_hunk，[N319] 与 [N327] 至 [N330] 改写路径，并跳过 [N340] 至 [N350] 正文保存与行号递增；[N386] 至 [N390] 证明当前入口可达且空补丁补全不恢复数据。references/business-review.md 的 BIZ-DATA-001 要求数据内容和归属保持正确，BIZ-SCENARIO-001 要求当前可达场景产生正确结果。",
+      "answered_count": 3,
+      "decision": "keep",
+      "confidence_score": 10,
+      "severity": "major",
+      "publication_status": "report_only"
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "scope": "Local parser evidence; no network or PR publication",
+  "python_version": "3.9.6",
+  "git_version": "git version 2.51.0",
+  "valid_finding": {
+    "input_diff_sha256": "2d875b8cd6023d680862d1e20b49903b19a52e84ac9689b63546128be3badcaf",
+    "observed": {
+      "paths": [
+        "counter;"
+      ],
+      "anchors": [
+        "[C1]int step(int counter) {",
+        "[O2]counter += 1;",
+        "[C2]return counter;",
+        "[C3]}"
+      ]
+    },
+    "proposed": {
+      "paths": [
+        "counter.cpp"
+      ],
+      "anchors": [
+        "[C1]int step(int counter) {",
+        "[O2]counter += 1;",
+        "[N2]++ counter;",
+        "[C3]return counter;",
+        "[C4]}"
+      ]
+    },
+    "confirmed": true,
+    "proposed_fix_passed": true
+  },
+  "removed_payload": {
+    "observed": {
+      "paths": [
+        "counter.cpp"
+      ],
+      "anchors": [
+        "[C1]int step(int counter) {",
+        "[O2]return counter + 1;",
+        "[N2]counter -= 1;",
+        "[N3]return counter;",
+        "[C4]}"
+      ]
+    },
+    "proposed": {
+      "paths": [
+        "counter.cpp"
+      ],
+      "anchors": [
+        "[C1]int step(int counter) {",
+        "[O2]-- counter;",
+        "[O3]return counter + 1;",
+        "[N2]counter -= 1;",
+        "[N3]return counter;",
+        "[C4]}"
+      ]
+    }
+  },
+  "ordinary_diff_unchanged": true,
+  "staged_cli": {
+    "observed": {
+      "status": "PARTIAL",
+      "integrity": {
+        "status": "partial",
+        "reasons": [
+          "missing_patch:counter.cpp"
+        ],
+        "publish_allowed": false
+      }
+    },
+    "proposed": {
+      "status": "SUCCESS",
+      "integrity": {
+        "status": "complete",
+        "reasons": [],
+        "publish_allowed": false
+      }
+    }
+  },
+  "excluded_hypothesis": {
+    "hypothesis_origin": "controller_supplied_negative_control",
+    "literal_argument_preserved": true,
+    "shell_enabled": false,
+    "marker_created": false,
+    "git_rejected_literal_revision": true,
+    "conclusion": "Excluded: this argument is not interpreted by a shell."
+  },
+  "checks_passed": 6,
+  "checks": [
+    "added payload stays in its file",
+    "added and context line numbers",
+    "removed payload and old line numbers",
+    "ordinary diff compatibility",
+    "shell injection negative control",
+    "real staged context CLI"
+  ]
+}

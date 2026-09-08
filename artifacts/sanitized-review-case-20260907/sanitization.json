@@ -1,0 +1,21 @@
+{
+  "strategy": "Minimum source extraction and anonymous inputs; no rewriting of captured responses.",
+  "source_code": "One generic framework module, preserved byte for byte and with original line numbers.",
+  "fixture_origin": "Newly constructed anonymous C++ input, not an exported customer PR.",
+  "negative_control_origin": "controller_supplied_negative_control; not a historical spontaneous finding.",
+  "excluded": [
+    "historical business sessions",
+    "personal home paths",
+    "real repository remotes",
+    "authentication tokens",
+    "chat transcripts",
+    "Git metadata"
+  ],
+  "preserved": [
+    "source hashes",
+    "original response bytes",
+    "sender bindings",
+    "receipt chain"
+  ],
+  "local_paths": "Only anonymous temporary paths are retained; artifact-map.json supports relocation."
+}

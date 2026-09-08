@@ -1,0 +1,10 @@
+diff --git a/counter.cpp b/counter.cpp
+index 2c01172..a3c8e06 100644
+--- a/counter.cpp
++++ b/counter.cpp
+@@ -1,4 +1,4 @@
+ int step(int counter) {
+-counter += 1;
++++ counter;
+ return counter;
+ }

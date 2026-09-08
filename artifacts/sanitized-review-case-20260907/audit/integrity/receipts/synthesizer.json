@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "run_id": "sanitized-review-case-20260907",
+  "sequence": 3,
+  "assignment_id": "synthesizer",
+  "agent_id": "synthesizer",
+  "role": "synthesizer",
+  "task_id": "synthesizer",
+  "sender_handle": "/root/case_synthesizer",
+  "input_path": "/private/tmp/review-case-hsj5fncr/workspace/.ai/code-review-new/sessions/local-20260907-230459-defe50/inbox/synthesizer-response.json",
+  "raw_wrapper_path": "/private/tmp/review-case-hsj5fncr/workspace/.ai/code-review-new/sessions/local-20260907-230459-defe50/inbox/raw/synthesizer.json",
+  "response_hash": "33cce32cf0bdd36d0a1f59f3129c25f1ddd56ddd1ee2515ac10199739e205cbc",
+  "output_field": "output",
+  "previous_receipt_hash": "984f9e0b14e1f866d850f29f5e77f159d268ce6f6c5dbd5a070db35d1219e482",
+  "captured_at": "2026-09-07T15:18:58.883977Z",
+  "publication_eligibility": "eligible",
+  "receipt_hash": "82e92e409f5f902b67a607446e1f80c25e0bc56163c2fa88bbc35641bc4e4026"
+}

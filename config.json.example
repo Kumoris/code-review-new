@@ -1,0 +1,46 @@
+{
+  "github_token_env": "GITHUB_TOKEN",
+  "github_api_base_url": "",
+  "github_api_version": "2022-11-28",
+  "clone_repo_path": "",
+  "enabled_severities": ["fatal", "major", "minor", "suggestion"],
+  "min_reportable_confidence_score": 7,
+  "max_concurrent_reviewers": 5,
+  "max_review_tasks": 8,
+  "review_deadline_minutes": 30,
+  "exclude_file_suffix": ".flex,.lightdt,.gitignore,.example,.md",
+  "session_max_age_hours": 6,
+  "adversary_enabled": true,
+  "deep_review_enabled": true,
+  "deep_review_call_chain_depth": {"core_business": 5, "general_business": 3, "infrastructure": 2},
+  "whole_repo": {
+    "max_file_bytes": 1000000,
+    "exclude_globs": [
+      ".ai/**",
+      ".code-review/**",
+      "node_modules/**",
+      "**/node_modules/**",
+      "vendor/**",
+      "**/vendor/**",
+      "dist/**",
+      "**/dist/**",
+      "build/**",
+      "**/build/**",
+      "target/**",
+      "**/target/**",
+      "*.min.js",
+      "*.min.css",
+      "*.map"
+    ]
+  },
+  "token_budget": {
+    "pipeline_limit": 200000,
+    "single_task_limit": 60000,
+    "max_rule_fraction": 0.3
+  },
+  "knowledge": {
+    "max_per_category": 10,
+    "max_total": 50
+  },
+  "verify_ssl": true
+}

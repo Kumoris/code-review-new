@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "role": "synthesizer",
+  "agent_id": "synthesizer",
+  "cluster_id": "synthesizer",
+  "task_id": "synthesizer",
+  "revision": "bcce10927fa3746eb13b19c0e71b029c52552c5c8b71475287ce5ce42b5daf6f",
+  "output": [
+    {
+      "status": "pending",
+      "comment": "**问题描述**：本地差异检视中，hunk 正文以 `++ ` 或 `-- ` 开头时会被误当作文件头。已复现 `notes.txt` 被归属为 `new-label.txt`、两条正文丢失，后续第二行被错标为 `[O1]` 和 `[N1]`；独立暂存区调用也产生 `missing_patch:counter.cpp`，真实文件仅剩空补丁。\n**原因**：`local_context.py:315` 和 `local_context.py:322` 在检查 `in_hunk` 前识别 `--- ` / `+++ `，抢先改写文件路径并跳过正文计数。`local_context.py:386` 至 `390` 的当前调用路径直接使用该解析结果，补空记录不能恢复丢失内容。\n**违反规则**：references/business-review.md：BIZ-DATA-001 保持业务数据语义；BIZ-SCENARIO-001 保持当前可达场景的正确结果。",
+      "file_path": "local_context.py",
+      "line": 322,
+      "severity": "major",
+      "confidence_score": 10,
+      "fix_suggestion": "将 `--- ` 和 `+++ ` 文件头分支均限制为 `not in_hunk`，使 hunk 内正文继续经过原有增删行计数分支。补一个合法 diff 回归检查，覆盖新增 `++ ` 与删除 `-- ` 正文，断言文件路径、完整内容和精确行号。",
+      "category": "correctness",
+      "issue_summary": "正文前缀被误识别为文件头，导致差异路径和行号错误",
+      "source_ids": [
+        "local-context-business:LOCAL-001"
+      ],
+      "publication_status": "report_only",
+      "rules": "references/business-review.md：BIZ-DATA-001；references/business-review.md：BIZ-SCENARIO-001"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "run_id": "sanitized-review-case-20260907",
+  "revision": "bcce10927fa3746eb13b19c0e71b029c52552c5c8b71475287ce5ce42b5daf6f",
+  "max_concurrent_reviewers": 5,
+  "assignments": [
+    {
+      "assignment_id": "review:local-context-business",
+      "agent_id": "reviewer-1",
+      "role": "reviewer",
+      "task_id": "local-context-business",
+      "cluster_id": "local-context-business",
+      "input_path": "/private/tmp/review-case-hsj5fncr/workspace/.ai/code-review-new/sessions/local-20260907-230459-defe50/context/review_manifest.json",
+      "declared_output_path": "/private/tmp/review-case-hsj5fncr/workspace/.ai/code-review-new/sessions/local-20260907-230459-defe50/reviewers/reviewer.json",
+      "required": true
+    },
+    {
+      "assignment_id": "adversary",
+      "agent_id": "adversary",
+      "role": "adversary",
+      "task_id": "adversary",
+      "cluster_id": "adversary",
+      "input_path": "/private/tmp/review-case-hsj5fncr/workspace/.ai/code-review-new/sessions/local-20260907-230459-defe50/context/review_manifest.json",
+      "required": true
+    },
+    {
+      "assignment_id": "synthesizer",
+      "agent_id": "synthesizer",
+      "role": "synthesizer",
+      "task_id": "synthesizer",
+      "cluster_id": "synthesizer",
+      "input_path": "/private/tmp/review-case-hsj5fncr/workspace/.ai/code-review-new/sessions/local-20260907-230459-defe50/context/review_manifest.json",
+      "required": true
+    },
+    {
+      "assignment_id": "zero-finding-second-pass",
+      "agent_id": "zero-finding-second-pass",
+      "role": "zero-finding-second-pass",
+      "task_id": "zero-finding-second-pass",
+      "cluster_id": "zero-finding-second-pass",
+      "input_path": "/private/tmp/review-case-hsj5fncr/workspace/.ai/code-review-new/sessions/local-20260907-230459-defe50/context/review_manifest.json",
+      "required": false
+    }
+  ]
+}

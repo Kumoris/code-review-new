@@ -1,0 +1,35 @@
+[
+  {
+    "id": "LOCAL-001",
+    "file": "local_context.py",
+    "line": 322,
+    "severity": "major",
+    "category": "correctness",
+    "evidence": "[N315] 和 [N322] 在判断 in_hunk 之前识别 --- / +++ 文件头，因此合法 hunk 中删除内容以 '-- ' 开头或新增内容以 '++ ' 开头时，也会进入文件头分支。使用标准库 difflib 生成 notes.txt 的合法 unified diff：旧文本为 '-- a/old-label.txt\\nold detail\\n'，新文本为 '++ b/new-label.txt\\nnew detail\\n'。直接运行当前 format_diff_with_anchors 后，file_path/new_path 实际变成 new-label.txt，old_path 变成 old-label.txt；两个首行均消失，真实第二行被标成 [O1]old detail 和 [N1]new detail。应保留 notes.txt 路径及 [O1]/[O2]/[N1]/[N2] 四行。[N386]-[N388] 证明本地 staged/branch/commit/range 流程直接使用此解析器。",
+    "impact": "合法本地 diff 被错误归属到正文伪造的文件名，并丢失实际变更行、破坏后续行号。context_mode 的 [N389]-[N390] 仅为缺失的真实文件补空 patch，不能恢复已丢失的内容或纠正伪文件记录；下游检视输入因而出现内容缺失和定位错误。",
+    "fix": "将 --- / +++ 文件头识别限制在尚未进入 hunk 的阶段，或在 hunk 内优先按增删行处理；由统一内容分支保留正文并递增对应行号。增加一个包含两种前缀的合法 diff 回归检查，断言真实文件路径、四条内容及精确行号均保持。",
+    "rules": "references/business-review.md：BIZ-DATA-001 Preserve business data semantics；references/business-review.md：BIZ-SCENARIO-001 Preserve reachable business scenarios",
+    "confidence_score": 10,
+    "defect_proof": {
+      "trigger": "当前 context_mode 在非 whole_repo 模式下经 [N386]-[N388] 将 Git diff 交给 format_diff_with_anchors；被审文件存在新增正文 '++ b/new-label.txt' 或删除正文 '-- a/old-label.txt' 时，合法 unified diff 的 hunk payload 分别以 '+++ ' 或 '--- ' 开头。",
+      "wrong_result": "已直接执行当前函数并断言复现：notes.txt 被输出为 new-label.txt，old_path 被输出为 old-label.txt；两个前缀正文行丢失，旧侧和新侧的真实第二行分别错误标成 [O1] 和 [N1]。",
+      "diff_rule_evidence": "当前 snapshot 精确锚点 [N315] 与 [N322] 的文件头判断不含 not in_hunk，抢先于 [N340]-[N350] 内容计数分支；[N319]/[N327]-[N330] 改写路径。违反 BIZ-DATA-001 的内容保真和归属要求，并使 [N386]-[N390] 当前可达场景产生错误检视输入，违反 BIZ-SCENARIO-001。"
+    },
+    "_admission": {
+      "source_id": "local-context-business:LOCAL-001",
+      "rule_ids": [
+        "BIZ-DATA-001",
+        "BIZ-SCENARIO-001"
+      ],
+      "rule_status": "review-required",
+      "adversary_verdict": "DEFINITE",
+      "defect_proof": {
+        "trigger": "当前 context_mode 在非 whole_repo 模式下经 [N386]-[N388] 将 Git diff 交给 format_diff_with_anchors；被审文件存在新增正文 '++ b/new-label.txt' 或删除正文 '-- a/old-label.txt' 时，合法 unified diff 的 hunk payload 分别以 '+++ ' 或 '--- ' 开头。",
+        "wrong_result": "已直接执行当前函数并断言复现：notes.txt 被输出为 new-label.txt，old_path 被输出为 old-label.txt；两个前缀正文行丢失，旧侧和新侧的真实第二行分别错误标成 [O1] 和 [N1]。",
+        "diff_rule_evidence": "当前 snapshot 精确锚点 [N315] 与 [N322] 的文件头判断不含 not in_hunk，抢先于 [N340]-[N350] 内容计数分支；[N319]/[N327]-[N330] 改写路径。违反 BIZ-DATA-001 的内容保真和归属要求，并使 [N386]-[N390] 当前可达场景产生错误检视输入，违反 BIZ-SCENARIO-001。"
+      },
+      "answered_proof_questions": 3,
+      "publication_eligibility": "publish"
+    }
+  }
+]

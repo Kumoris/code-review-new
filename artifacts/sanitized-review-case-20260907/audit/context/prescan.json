@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "source_sha": "23d320d53479f7c791fffa04cd734bc773848521",
+  "classification": "new_review",
+  "review_scope": [
+    "local_context.py"
+  ],
+  "files": [
+    {
+      "path": "local_context.py",
+      "language": "python",
+      "always_check": {
+        "hardcoded-credentials": "checked-no-signal",
+        "weak-cryptography": "checked-no-signal",
+        "digital-certificates": "checked-no-signal"
+      },
+      "security_signals": [],
+      "spark_signals": [],
+      "jsx_signals": null,
+      "agents_md_signal": "not-found",
+      "agents_md_path": null,
+      "business_doc_signal": "not-found"
+    }
+  ],
+  "finding_candidates": [],
+  "trivial": false,
+  "added_line_count": 712
+}

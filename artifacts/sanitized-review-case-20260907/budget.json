@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "heuristic": {
+    "bytes_per_token": 3.0,
+    "agent_overhead_tokens": 4000
+  },
+  "limits": {
+    "budget_limit": 200000,
+    "single_task_budget": 60000,
+    "marginal_ratio": 0.8,
+    "max_rule_fraction": 0.3
+  },
+  "estimated_tokens": {
+    "diff": 11320,
+    "rules": 17618,
+    "knowledge": 134,
+    "prescan": 197,
+    "overhead": 4000,
+    "total": 33269
+  },
+  "pipeline_estimates": {
+    "reviewers_total": 33269,
+    "peak_concurrent": 33269,
+    "max_concurrent_reviewers": 1,
+    "synthesizer": 16311,
+    "pipeline_total": 49580
+  },
+  "per_task_breakdown": [
+    {
+      "task_id": "local-context-business",
+      "scope_file_count": 1,
+      "diff_tokens": 11320,
+      "rules_tokens": 17618,
+      "knowledge_tokens": 134,
+      "prescan_tokens": 197,
+      "overhead_tokens": 4000,
+      "total": 33269,
+      "task_recommendation": "within_task_budget"
+    }
+  ],
+  "recommendation": "within_budget",
+  "suggestions": []
+}

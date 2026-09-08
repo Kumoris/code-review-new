@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "platform": "local",
+  "changed_files": [
+    "local_context.py"
+  ],
+  "diff_file": "/private/tmp/review-case-hsj5fncr/workspace/.ai/code-review-new/sessions/local-20260907-230459-defe50/context/diffs.json",
+  "snapshot": {
+    "base_sha": "23d320d53479f7c791fffa04cd734bc773848521",
+    "head_sha": "23d320d53479f7c791fffa04cd734bc773848521",
+    "merge_base_sha": "23d320d53479f7c791fffa04cd734bc773848521",
+    "diff_sha256": "0d8eaf3deda3241956750319bc9f80a6f26aeee8074d306d78eb82a303ce7983",
+    "captured_at": "2026-09-07T23:04:59.363797+08:00",
+    "repository_sha256": "bcce10927fa3746eb13b19c0e71b029c52552c5c8b71475287ce5ce42b5daf6f"
+  },
+  "integrity": {
+    "status": "complete",
+    "reasons": [],
+    "publish_allowed": false
+  },
+  "metadata": {
+    "mode": "local",
+    "review_mode": "whole_repo",
+    "baseline": "tracked-working-tree",
+    "local_report_path": "/private/tmp/review-case-hsj5fncr/workspace/.code-review/whole_repo_review_20260907-230459.md",
+    "review_workspace": {
+      "available": true,
+      "path": "/private/tmp/review-case-hsj5fncr/workspace"
+    },
+    "session_dir": "/private/tmp/review-case-hsj5fncr/workspace/.ai/code-review-new/sessions/local-20260907-230459-defe50",
+    "whole_repo": {
+      "included_file_count": 1,
+      "excluded_file_count": 0,
+      "repository_manifest_file": "/private/tmp/review-case-hsj5fncr/workspace/.ai/code-review-new/sessions/local-20260907-230459-defe50/context/repository-files.json"
+    }
+  },
+  "repository_manifest_file": "/private/tmp/review-case-hsj5fncr/workspace/.ai/code-review-new/sessions/local-20260907-230459-defe50/context/repository-files.json"
+}

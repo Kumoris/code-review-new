@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "receipts": [
+    {
+      "sequence": 1,
+      "assignment_id": "review:local-context-business",
+      "receipt_path": "/private/tmp/review-case-hsj5fncr/workspace/.ai/code-review-new/sessions/local-20260907-230459-defe50/integrity/receipts/review_local-context-business.json",
+      "receipt_hash": "f2c94277edc025cb5e0fbc34c22cc696aec6e26718275ed7c432eee7cf46ee34"
+    },
+    {
+      "sequence": 2,
+      "assignment_id": "adversary",
+      "receipt_path": "/private/tmp/review-case-hsj5fncr/workspace/.ai/code-review-new/sessions/local-20260907-230459-defe50/integrity/receipts/adversary.json",
+      "receipt_hash": "984f9e0b14e1f866d850f29f5e77f159d268ce6f6c5dbd5a070db35d1219e482"
+    },
+    {
+      "sequence": 3,
+      "assignment_id": "synthesizer",
+      "receipt_path": "/private/tmp/review-case-hsj5fncr/workspace/.ai/code-review-new/sessions/local-20260907-230459-defe50/integrity/receipts/synthesizer.json",
+      "receipt_hash": "82e92e409f5f902b67a607446e1f80c25e0bc56163c2fa88bbc35641bc4e4026"
+    }
+  ]
+}

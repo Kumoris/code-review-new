@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "run_id": "sanitized-review-case-20260907",
+  "sequence": 2,
+  "assignment_id": "adversary",
+  "agent_id": "adversary",
+  "role": "adversary",
+  "task_id": "adversary",
+  "sender_handle": "/root/case_adversary",
+  "input_path": "/private/tmp/review-case-hsj5fncr/workspace/.ai/code-review-new/sessions/local-20260907-230459-defe50/inbox/adversary-response.json",
+  "raw_wrapper_path": "/private/tmp/review-case-hsj5fncr/workspace/.ai/code-review-new/sessions/local-20260907-230459-defe50/inbox/raw/adversary.json",
+  "response_hash": "fe56ae2330a9b17ccdd41b866ce98b1fa0e99b8d14003ac5b7d4950528d34bb9",
+  "output_field": "output",
+  "previous_receipt_hash": "f2c94277edc025cb5e0fbc34c22cc696aec6e26718275ed7c432eee7cf46ee34",
+  "captured_at": "2026-09-07T15:15:43.575696Z",
+  "publication_eligibility": "eligible",
+  "receipt_hash": "984f9e0b14e1f866d850f29f5e77f159d268ce6f6c5dbd5a070db35d1219e482"
+}

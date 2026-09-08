@@ -1,0 +1,19 @@
+--- a/local_context.py
++++ b/local_context.py
+@@ -312,14 +312,14 @@
+             current_new_path = line[len("rename to "):]
+             current_file = current_new_path
+             current_status = "renamed"
+-        elif line.startswith("--- "):
++        elif not in_hunk and line.startswith("--- "):
+             if line == "--- /dev/null":
+                 current_old_path = None
+             else:
+                 current_old_path = line[4:].strip()
+                 if current_old_path.startswith("a/"):
+                     current_old_path = current_old_path[2:]
+-        elif line.startswith("+++ "):
++        elif not in_hunk and line.startswith("+++ "):
+             if line == "+++ /dev/null":
+                 current_new_path = None
+                 current_file = current_old_path

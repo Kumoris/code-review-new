@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "run_id": "sanitized-review-case-20260907",
+  "sequence": 1,
+  "assignment_id": "review:local-context-business",
+  "agent_id": "reviewer-1",
+  "role": "reviewer",
+  "task_id": "local-context-business",
+  "sender_handle": "/root/case_reviewer",
+  "input_path": "/private/tmp/review-case-hsj5fncr/workspace/.ai/code-review-new/sessions/local-20260907-230459-defe50/reviewers/reviewer.json",
+  "raw_wrapper_path": "/private/tmp/review-case-hsj5fncr/workspace/.ai/code-review-new/sessions/local-20260907-230459-defe50/inbox/raw/review_local-context-business.json",
+  "response_hash": "4247a91a3e2b16fa405414e17a26669573513cca9bc33103e488952f71057bef",
+  "output_field": "findings",
+  "previous_receipt_hash": null,
+  "captured_at": "2026-09-07T15:12:19.101419Z",
+  "publication_eligibility": "eligible",
+  "receipt_hash": "f2c94277edc025cb5e0fbc34c22cc696aec6e26718275ed7c432eee7cf46ee34"
+}

@@ -1,0 +1,139 @@
+# Code Review New — GitHub 原生多 Agent 代码检视框架
+
+## 1. 项目定位
+
+`code-review-new` 是一个 Codex 原生的六阶段代码检视 Skill，支持 GitHub Pull Request、本地 Git diff、本地全仓基线审计和由父 PR 聚合多个子 PR 的 Manifest 模式。它不依赖独立 LLM SDK：Codex 负责创建 Reviewer、Adversary、Synthesizer 子 Agent，Python 脚本负责固定输入、验证身份、执行门控和生成输出。
+
+目标不是让 prompt “更会挑问题”，而是让每条公开意见都有固定 revision、精确 diff 行、规则编号、当前缺陷证明和完整性回执。
+
+## 2. 六阶段架构
+
+```text
+User request
+  │
+  ├─ Phase 1  Context + immutable snapshot
+  ├─ Phase 2  Prescan + classification + routing + budget
+  ├─ Phase 3  Dimension Reviewers (max 5 concurrent)
+  ├─ Phase 3.5  Admission + Finding Adversary
+  ├─ Phase 4  Deep Review (workspace optional)
+  ├─ Phase 5  Synthesis + Defect Proof + Integrity
+  └─ Phase 6  Dry-run / GitHub review / local report + knowledge
+```
+
+四种输入模式共用 Phase 2-5，只有上下文获取和输出不同：
+
+| 模式 | 输入 | 上下文 | 输出 |
+|---|---|---|---|
+| GitHub PR | `https://host/owner/repo/pull/N` | `github_context.py` | dry-run 或 GitHub review |
+| Local Git | staged、branch、commit、range | `local_context.py` | Markdown 报告 |
+| Local Whole Repo | Git 跟踪的当前文本文件 | `local_context.py --whole-repo` | 仅本地 Markdown 基线审计报告 |
+| Manifest PR | 父 PR 中的完整 PR URL 或 `owner/repo#N` | `manifest_context.py` | 子 PR 独立 session + 汇总 |
+
+GitHub.com 与 GitHub Enterprise 使用同一实现。前者默认 `api.github.com`，后者默认 `https://host/api/v3`，也可在配置中覆盖 API base URL。Token 只从环境变量读取。
+
+## 3. 固定快照与 diff
+
+GitHub context 固定 owner、repo、PR number、state、base/head/merge-base SHA 和 diff SHA-256。本地模式固定 base/head SHA 和 diff hash；Manifest 的每个子 PR 有独立快照。
+
+PR 文件使用分页 API 获取，patch 转换成统一锚点：
+
+- `[N42]`：新侧第 42 行，可作为公开意见位置；
+- `[O42]`：删除行，只能作为证据；
+- `[C42]`：上下文行，只能作为证据。
+
+缺少 patch、API 截断、超过平台文件上限或远端 head 变化时，运行状态变为 `partial`/`blocked`，禁止发布。
+
+全仓模式把纳入范围的当前文件表示为 `status=snapshot`，每一行使用 `[N]` 固定真实行号；同时生成 `repository-files.json`，记录逐文件 SHA-256、总清单哈希和所有排除项。它只读取 Git 跟踪文件，默认排除依赖/构建产物、二进制、非 UTF-8、符号链接和超大文件，并始终关闭远程发布。
+
+## 4. Agent 角色
+
+框架包含三个主角色，以及仅在零 finding 条件触发的独立复核角色：
+
+| 角色 | 定义 | 职责 |
+|---|---|---|
+| Dimension Reviewer | `agents/reviewer.md` | 在单个 manifest task 范围内逐条规则检查并输出 finding wrapper |
+| Finding Adversary | `agents/adversary.md` | 独立挑战 finding，输出 DEFINITE/LIKELY/PLAUSIBLE/SPECULATIVE |
+| Review Synthesizer | `agents/synthesizer.md` | 读取 admitted finding，验证、去重、校准、生成评论和 Defect Proof |
+| Zero-Finding Second Pass | `agents/zero-finding-second-pass.md` | 首轮为空且范围不少于 3 个文件时独立复核遗漏 |
+
+Agent 不调用 GitHub 写 API。每个原始输出 wrapper 包含 `schema_version`、逻辑 `agent_id`、task/cluster ID、固定 revision 和角色结果；捕获后不可修改。
+
+## 5. Dispatch Contract
+
+控制器为每个 assignment 预分配逻辑身份并生成 `dispatch-ledger.json`。Codex 创建 Agent 后，将实际 sender handle 写入 `dispatch-bindings.json`。`review_core.py capture-response` 验证：
+
+1. assignment 存在且未重复捕获；
+2. sender handle 与 binding 一致；
+3. wrapper 的 agent/task/revision 与 ledger 一致；
+4. Reviewer、Adversary、Synthesizer 和 second-pass 的独立性成立；
+5. response hash 与 receipt 一致。
+
+原始 wrapper 保存于只读语义的 inbox；Admission 只写独立 admitted 副本，从而避免“哈希后又清洗原文件”的冲突。
+
+## 6. Prescan 与任务路由
+
+Prescan 是轻量词法信号检测，不产生 finding。每个支持文件都检查硬编码凭证、弱密码算法和证书验证关闭；此外检测注入、Spark、JSX prop 删除、AGENTS.md 和业务设计文档等信号。
+
+Always-Check 的 `checked-no-signal` 优先于普通关键词；扫描失败时才使用路径/关键词 fallback。≤3 行且只有空白、括号或注释的 diff 可通过 exit code 2 短路。
+
+Manifest 最多生成 8 个 task，Reviewer 最多 5 个并发。任务按语言和 CODE_DESIGN、BEHAVIOR、SECURITY、TEST、BUILD_OPS、DOMAIN_RULES、ARCHITECTURE、BUSINESS 维度组合。`routed_files ∪ unsupported_files` 必须精确等于 `changed_files`。
+
+## 7. PR 分类
+
+GitHub 分类只优化是否需要再次检视，不产生远程动作：
+
+| 状态 | 含义 |
+|---|---|
+| `skip` | PR 已关闭或已合并 |
+| `new_review` | 当前没有可复用的历史检视 |
+| `re_review` | 已有 review/comment，但 head 或作者回复发生变化 |
+| `review_current` | 当前 head 已完成检视 |
+| `merge_ready` | 当前 head 已批准且平台报告可合并，仅作为提示 |
+
+批准、Request Changes 和 merge 永远要求用户明确授权。
+
+## 8. Admission、Adversary 与 Defect Proof
+
+Admission 校验必填字段、scope、`[N]`、规则状态、severity、confidence、Agent 身份、revision 和 receipt。Adversary 结果按 ID 应用：SPECULATIVE 丢弃、PLAUSIBLE 降一级、LIKELY/DEFINITE 保留。
+
+每条 retained finding 回答三项 Defect Proof：触发路径/输入/条件、实际错误结果、diff 行与规则证据。高置信度回答至少 2/3 才可发布；中置信度只进入 `report_only`；低置信度丢弃。零 finding 且范围不少于 3 个文件时，必须由独立 Agent 做 second pass。
+
+## 9. 完整性状态
+
+`review-integrity.json` 的公开状态为：
+
+- `complete`：快照、范围、身份、receipt、hash 和 proof 均完整；
+- `partial`：存在可恢复的证据缺失，只能生成报告；
+- `blocked`：发现身份冒充、制品篡改、scope drift 或 stale revision，停止输出。
+
+只有 `complete` 且 revision 仍当前的 GitHub session 才能进入发布脚本。
+
+## 10. GitHub 输出
+
+`submit_reviews.py` 默认只生成 payload。`--apply` 才创建 GitHub review，行内评论绑定固定 `commit_id`、`path`、`line` 和 `side=RIGHT`。默认事件为 COMMENT；APPROVE、REQUEST_CHANGES 和 merge 需要额外显式参数与用户授权。
+
+写请求超时后不直接重试：先重新读取 reviews/comments，确认是否已创建，再恢复 receipt 或去重。Local Git 永不访问 GitHub 写接口。
+
+## 11. 知识闭环
+
+运行时知识保存在目标项目 `.ai/code-review-new/knowledge/`，不修改 Skill 安装目录。Positive 来源于 confirmed proof，Negative 来源于 Adversary 丢弃项和 failed proof；只有 `complete` 运行可更新。过滤使用路径匹配和 bigram 相似度，默认每类 10 条、总计 50 条，写入采用原子替换。
+
+## 12. 核心脚本
+
+| 脚本 | 职责 |
+|---|---|
+| `github_context.py` / `local_context.py` / `manifest_context.py` | PR、Local diff、Local whole-repo 与 Manifest 上下文快照 |
+| `prescan.py` / `pr_classifier.py` / `token_estimator.py` | 路由前确定性分析 |
+| `review_core.py` | dispatch、binding、capture、integrity |
+| `review_admission.py` / `ensure_adversary.py` | 准入与 fallback 审计 |
+| `deep_review_analyzer.py` | change type 与调用链 |
+| `knowledge_manager.py` | filter/update/LRU |
+| `submit_reviews.py` / `render_report.py` | GitHub dry-run/apply 与本地报告 |
+
+## 13. 设计边界
+
+1. 脚本处理确定性事实，Agent 处理语义判断。
+2. 远程写入默认关闭，分类结果从不等于授权。
+3. 快照、原始响应和 receipt 不可被后续阶段静默替换。
+4. 误报时宁可静默，证据不完整的 finding 不公开。
+5. 不维护旧平台适配器、旧通知通道或独立 Python Agent SDK 兼容层。

@@ -1,0 +1,41 @@
+{
+  "skill_name": "code-review-new",
+  "description": "Platform-neutral assertions for offline GitHub, local Git, and integrity session fixtures.",
+  "evals": [
+    {
+      "id": 1,
+      "name": "github-pr-complete-contract",
+      "prompt": "Review a mocked GitHub pull request without performing remote writes.",
+      "expected_output": "A complete, fixed-revision session with diff anchors and evidence-bound findings.",
+      "assertions": [
+        {"id": "A1", "description": "Core artifacts exist", "type": "file_exists", "paths": ["context/context.json", "context/diffs.json", "context/review_manifest.json", "submission/review_store.json", "submission/review-integrity.json"]},
+        {"id": "A2", "description": "Platform is GitHub", "type": "json_field_equals", "path": "context/context.json", "field": "platform", "value": "github"},
+        {"id": "A3", "description": "Diff has exact anchors", "type": "custom", "script": "evals/assertions/check_diff_anchors.py"},
+        {"id": "A4", "description": "Manifest covers changed files", "type": "custom", "script": "evals/assertions/check_file_coverage.py"},
+        {"id": "A5", "description": "Findings cite rule IDs", "type": "custom", "script": "evals/assertions/check_rule_ids.py"},
+        {"id": "A6", "description": "Integrity is complete", "type": "json_field_equals", "path": "submission/review-integrity.json", "field": "public_state", "value": "complete"}
+      ]
+    },
+    {
+      "id": 2,
+      "name": "local-git-no-remote-write",
+      "prompt": "Review staged changes in a temporary local Git repository.",
+      "expected_output": "A Markdown report and no submitted GitHub records.",
+      "assertions": [
+        {"id": "A1", "description": "Platform is local", "type": "json_field_equals", "path": "context/context.json", "field": "platform", "value": "local"},
+        {"id": "A2", "description": "No GitHub submission occurred", "type": "custom", "script": "evals/assertions/check_no_github_submit.py"},
+        {"id": "A3", "description": "Diff has exact anchors", "type": "custom", "script": "evals/assertions/check_diff_anchors.py"}
+      ]
+    },
+    {
+      "id": 3,
+      "name": "partial-session-blocks-publication",
+      "prompt": "Evaluate a mocked PR fixture with an unavailable patch.",
+      "expected_output": "The run is partial and remote publication is closed.",
+      "assertions": [
+        {"id": "A1", "description": "Integrity is partial", "type": "json_field_equals", "path": "submission/review-integrity.json", "field": "public_state", "value": "partial"},
+        {"id": "A2", "description": "No GitHub submission occurred", "type": "custom", "script": "evals/assertions/check_no_github_submit.py"}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "run_id": "sanitized-review-case-20260907",
+  "created_at": "2026-09-07T15:05:57.197585Z",
+  "deadline_at": "2026-09-07T15:35:57.197585Z",
+  "revision": "bcce10927fa3746eb13b19c0e71b029c52552c5c8b71475287ce5ce42b5daf6f",
+  "context_path": "/private/tmp/review-case-hsj5fncr/workspace/.ai/code-review-new/sessions/local-20260907-230459-defe50/context/context.json",
+  "manifest_path": "/private/tmp/review-case-hsj5fncr/workspace/.ai/code-review-new/sessions/local-20260907-230459-defe50/context/review_manifest.json",
+  "registry_path": "/private/tmp/review-case-hsj5fncr/rules/rule-registry.md",
+  "diff_path": "/private/tmp/review-case-hsj5fncr/workspace/.ai/code-review-new/sessions/local-20260907-230459-defe50/context/diffs.json",
+  "context_hash": "98e176d63216e56fe263d6da303278e4b5f80da514b134884da46b3ff1b7de6c",
+  "manifest_hash": "79d986040873f0a8eb5851201d01960585231b916d362026434c33b2fa951422",
+  "registry_hash": "318abea04bf01abad0cfe18b9f8428f5ee2017a390acc02b4ecdcaaf07ecce91",
+  "diff_hash": "cc9503fc833c46e304cea953a04504d0bc6c43a142956b45acf711a6c19ee581",
+  "ledger_hash": "c7a7f359b1b29165963dc5766ff549d57e1c2424368ecdfb3d4decbf0917db9b",
+  "state": "partial",
+  "public_state": "partial",
+  "publish_allowed": false,
+  "publication_mode": "blocked",
+  "repository_manifest_path": "/private/tmp/review-case-hsj5fncr/workspace/.ai/code-review-new/sessions/local-20260907-230459-defe50/context/repository-files.json",
+  "repository_manifest_hash": "86c5999f24d455b82669bd6e599d3e1876c3c46ad6956fe291590e7b1e840b32"
+}

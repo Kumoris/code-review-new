@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "review_tasks": [
+    {
+      "task_id": "local-context-business",
+      "agent_id": "reviewer-1",
+      "dimension_id": "BUSINESS",
+      "scope_file_paths": [
+        "local_context.py"
+      ],
+      "focus": "对本地快照模块进行限定范围基线审查，验证差异解析的数据归属与行号完整性。",
+      "local_rule_paths": [
+        "/private/tmp/review-case-hsj5fncr/rules/business-review.md",
+        "/private/tmp/review-case-hsj5fncr/rules/common.md",
+        "/private/tmp/review-case-hsj5fncr/rules/false-positive-avoidance.md",
+        "/private/tmp/review-case-hsj5fncr/rules/rule-registry.md"
+      ],
+      "repository_rule_paths": [],
+      "rule_ids_by_file": {
+        "local_context.py": [
+          "BIZ-DESIGN-001",
+          "BIZ-SCENARIO-001",
+          "BIZ-DATA-001",
+          "COM-ARCH-001",
+          "COM-ARCH-002",
+          "COM-ARCH-003",
+          "COM-ARCH-004",
+          "COM-ARCH-005",
+          "COM-ARCH-006",
+          "COM-ARCH-007",
+          "COM-ARCH-008",
+          "COM-CODE-001",
+          "COM-CODE-002",
+          "COM-CODE-003",
+          "COM-CODE-004",
+          "COM-CODE-005",
+          "COM-CODE-006",
+          "COM-PERF-001",
+          "COM-PERF-002",
+          "COM-PERF-003",
+          "COM-PERF-004",
+          "COM-SEC-001",
+          "COM-SEC-002",
+          "COM-SEC-003",
+          "COM-SEC-004",
+          "COM-SEC-005",
+          "COM-SEC-006",
+          "COM-SEC-007",
+          "COM-SEC-008",
+          "COM-SEC-009",
+          "COM-SEC-010",
+          "COM-TEST-001",
+          "COM-TEST-002",
+          "COM-TEST-003",
+          "COM-TEST-004",
+          "COM-TEST-005",
+          "COM-BUILD-001",
+          "COM-BUILD-002",
+          "COM-BUILD-003",
+          "COM-BIZ-001",
+          "COM-BIZ-002"
+        ]
+      },
+      "id_prefix": "LOCAL",
+      "output_path": "/private/tmp/review-case-hsj5fncr/workspace/.ai/code-review-new/sessions/local-20260907-230459-defe50/reviewers/reviewer.json"
+    }
+  ],
+  "coverage": {
+    "routed_files": [
+      "local_context.py"
+    ],
+    "unsupported_files": []
+  },
+  "scope_note": "Explicit one-module baseline audit of a byte-identical source copy; not a whole framework audit."
+}

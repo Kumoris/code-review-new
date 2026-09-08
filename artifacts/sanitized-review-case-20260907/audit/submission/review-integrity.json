@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "run_id": "sanitized-review-case-20260907",
+  "checked_at": "2026-09-07T15:18:58.955236Z",
+  "phase": "final",
+  "state": "complete",
+  "public_state": "complete",
+  "publish_allowed": false,
+  "publication_mode": "report_only",
+  "errors": [],
+  "warnings": [],
+  "assignments": {
+    "declared": 4,
+    "captured": 3,
+    "required": 3
+  }
+}

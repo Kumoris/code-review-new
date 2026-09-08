@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "bindings": [
+    {
+      "assignment_id": "review:local-context-business",
+      "agent_id": "reviewer-1",
+      "sender_handle": "/root/case_reviewer",
+      "bound_at": "2026-09-07T15:06:12.982092Z"
+    },
+    {
+      "assignment_id": "adversary",
+      "agent_id": "adversary",
+      "sender_handle": "/root/case_adversary",
+      "bound_at": "2026-09-07T15:12:36.019202Z"
+    },
+    {
+      "assignment_id": "synthesizer",
+      "agent_id": "synthesizer",
+      "sender_handle": "/root/case_synthesizer",
+      "bound_at": "2026-09-07T15:16:00.436289Z"
+    }
+  ]
+}
